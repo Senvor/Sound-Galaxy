@@ -2,7 +2,8 @@
 
 Visualize sound in real-time by turning audio input into a moving galaxy of particles! 
 
-Live Preview: [https://sound-galaxy.vercel.app/](https://sound-galaxy.vercel.app/)
+Live Preview:
+https://sound-galaxy.vercel.app/
 
 ## About the Project
 Sound visualization is one of the coolest things that modern-day web development tools have made accessible. There’s something surreal and indescribably satisfying about seeing the sounds around you on your screen and somehow understanding what you’re seeing.
