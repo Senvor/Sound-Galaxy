@@ -1,6 +1,8 @@
 # Sound Galaxy
 
-Visualize sound in real-time by turning audio input into a moving galaxy of particles! 
+Visualize sound in real-time by turning audio input into a moving galaxy of particles!
+
+![Hackatime](https://hackatime.hackclub.com/api/v1/badge/U0B4TE3MN1G/Senvor/Sound-Galaxy)
 
 Live Preview:
 https://sound-galaxy.vercel.app/
