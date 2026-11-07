@@ -1,4 +1,6 @@
 let fft
+let mic
+let started = false
 let particles = []
 
 let Particle = function (position) {
@@ -44,9 +46,7 @@ function setup () {
     createCanvas(windowWidth, windowHeight)
     noStroke()
 
-    let mic = new p5.AudioIn()
-    mic.start()
-
+    mic = new p5.AudioIn()
     fft = new p5.FFT()
     fft.setInput(mic)
 
@@ -55,8 +55,32 @@ function setup () {
 
 function draw () {
     background(0, 0, 0)
+    if (!started) {
+        // Browsers block audio until the user clicks, so wait for a click before turning on the mic
+        fill(255)
+        textAlign(CENTER, CENTER)
+        textSize(min(width, height) / 18)
+        text('Click to turn on the mic', width / 2, height / 2)
+        return
+    }
     let spectrum = fft.analyze()
     updateParticles(spectrum)
     drawParticles()
 }
 
+
+function startMic () {
+    if (started) return
+    userStartAudio()
+    mic.start()
+    started = true
+}
+
+function mousePressed () { startMic() }
+function touchStarted () { startMic() }
+function keyPressed () { startMic() }
+
+function windowResized () {
+    resizeCanvas(windowWidth, windowHeight)
+    positionParticles()
+}
