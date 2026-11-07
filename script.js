@@ -71,7 +71,8 @@ function draw () {
 
 function startMic () {
     if (started) return
-    userStartAudio()
+    if (typeof userStartAudio === 'function') userStartAudio()
+    else getAudioContext().resume()
     mic.start()
     started = true
 }
