@@ -5,7 +5,7 @@ Visualize sound in real-time by turning audio input into a moving galaxy of part
 ![Hackatime](https://hackatime.hackclub.com/api/v1/badge/U0B4TE3MN1G/Senvor/Sound-Galaxy)
 
 Live Preview:
-https://sound-galaxy.vercel.app/
+https://soundgalaxy.senvor.dev/
 
 ![Sound Galaxy screenshot](images/preview.png)
 
@@ -24,7 +24,7 @@ Turn on your mic, play some music, or scream as loud as you can to see the galax
 - **p5.sound** - getting the mic input and reading the sound levels
 - **JavaScript** - all the particle logic
 - **HTML** - the page
-- **Vercel** - hosting the live preview
+- **GitHub Pages** - hosting the live preview
 
 ## How and Why I Built It
 I built this project to level up my programming skills and explore the creative possibilities of modern web development by following [this](https://workshops.hackclub.com/sound_galaxy/) Tutorial.
