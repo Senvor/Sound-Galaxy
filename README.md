@@ -31,3 +31,6 @@ I built this project to level up my programming skills and explore the creative 
 
 ## Ready to explore?
 Check out the live app and try different sound sources to see how the particles respond!
+
+## License
+This project is licensed under the [MIT License](LICENSE). You're free to use, modify, and share it, as long as the original copyright notice is kept.
