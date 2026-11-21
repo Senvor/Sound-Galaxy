@@ -7,14 +7,59 @@
     <title>Sound Galaxy</title>
 
     <style>
-        html, body { margin: 0; padding: 0; overflow: hidden; background: #050312; }
+        html, body { margin: 0; padding: 0; overflow: hidden; background: #000; transition: background .5s; }
+        body.light { background: #fff; }
         canvas { display: block; }
+
+        /* theme toggle: sun <-> moon */
+        #theme-toggle {
+            position: fixed; top: 16px; right: 16px; z-index: 10;
+            width: 52px; height: 52px; border-radius: 50%;
+            border: 1px solid rgba(255,255,255,.25);
+            background: rgba(20,20,30,.6); color: #ffd36b;
+            display: grid; place-items: center; cursor: pointer;
+            backdrop-filter: blur(6px);
+            transition: background .5s, border-color .5s, color .5s, transform .2s;
+            -webkit-tap-highlight-color: transparent;
+        }
+        #theme-toggle:hover { transform: scale(1.08); }
+        #theme-toggle:active { transform: scale(.92); }
+        body.light #theme-toggle { background: rgba(255,255,255,.8); border-color: rgba(0,0,0,.15); color: #f5a623; }
+        #theme-toggle svg { width: 26px; height: 26px; transition: transform .6s cubic-bezier(.68,-.55,.27,1.55); }
+        #theme-toggle .core { transition: r .5s ease; }
+        #theme-toggle .bite { transition: cx .5s ease, cy .5s ease; }
+        #theme-toggle .rays { transform-origin: 12px 12px; transition: transform .5s ease, opacity .4s ease; }
+        /* dark theme shows the moon */
+        body:not(.light) #theme-toggle svg { transform: rotate(0deg); }
+        body:not(.light) #theme-toggle .core { r: 9px; }
+        body:not(.light) #theme-toggle .bite { cx: 17px; cy: 7px; }
+        body:not(.light) #theme-toggle .rays { transform: scale(.4) rotate(-90deg); opacity: 0; }
+        /* light theme shows the sun */
+        body.light #theme-toggle svg { transform: rotate(180deg); }
+        body.light #theme-toggle .core { r: 5px; }
+        body.light #theme-toggle .bite { cx: 30px; cy: 0px; }
+        body.light #theme-toggle .rays { transform: scale(1) rotate(0); opacity: 1; }
     </style>
 
     <script src="https://cdn.jsdelivr.net/npm/p5@1.9.4/lib/p5.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/p5@1.9.4/lib/addons/p5.sound.min.js"></script>
 </head>
 <body>
+    <button id="theme-toggle" aria-label="Switch theme" title="Switch theme">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+            <mask id="moon-mask">
+                <rect x="0" y="0" width="24" height="24" fill="white"/>
+                <circle class="bite" cx="17" cy="7" r="7" fill="black"/>
+            </mask>
+            <circle class="core" cx="12" cy="12" r="9" fill="currentColor" mask="url(#moon-mask)"/>
+            <g class="rays" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+                <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+                <line x1="4.2" y1="4.2" x2="5.6" y2="5.6"/><line x1="18.4" y1="18.4" x2="19.8" y2="19.8"/>
+                <line x1="4.2" y1="19.8" x2="5.6" y2="18.4"/><line x1="18.4" y1="5.6" x2="19.8" y2="4.2"/>
+            </g>
+        </svg>
+    </button>
     <script src="script.js"></script>
 </body>
 </html>

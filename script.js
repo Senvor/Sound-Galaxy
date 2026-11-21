@@ -6,12 +6,22 @@ let particles = []
 let stars = []
 let showHelp = false
 
-// each band gets its own color so you can see the music
-const bands = {
-    bass: [255, 80, 110],
-    mid: [80, 255, 170],
-    treble: [110, 170, 255]
+// two themes: black (default) and white
+const themes = {
+    dark: {
+        bg: [0, 0, 0], text: 255, star: [255, 255, 255, 120], panel: [15, 15, 25, 200],
+        bands: { bass: [255, 80, 110], mid: [80, 255, 170], treble: [110, 170, 255] }
+    },
+    light: {
+        bg: [255, 255, 255], text: 20, star: [30, 30, 60, 90], panel: [240, 240, 248, 220],
+        bands: { bass: [225, 30, 75], mid: [0, 165, 105], treble: [40, 90, 230] }
+    }
 }
+let themeName = localStorage.getItem('sg-theme') === 'light' ? 'light' : 'dark'
+let theme = themes[themeName]
+
+// each band gets its own color so you can see the music
+let bands = theme.bands
 const bandNames = ['bass', 'mid', 'treble']
 
 // smoothed levels + the loudest each band has been, so quiet mics still react
@@ -20,7 +30,6 @@ let peak = { bass: 0.2, mid: 0.2, treble: 0.2 }
 
 let Particle = function (band) {
     this.band = band
-    this.base = bands[band]
     this.reset = function () {
         this.position = createVector(random(width), random(height))
         this.sway = random(TWO_PI)
@@ -41,10 +50,11 @@ let Particle = function (band) {
 
     this.draw = function (energy) {
         let d = this.size + energy * 22
+        let c = bands[this.band]
         // soft glow behind the dot
-        fill(this.base[0], this.base[1], this.base[2], 40 + energy * 60)
+        fill(c[0], c[1], c[2], 40 + energy * 60)
         circle(this.position.x, this.position.y, d * 2.2)
-        fill(this.base[0], this.base[1], this.base[2], 140 + energy * 115)
+        fill(c[0], c[1], c[2], 140 + energy * 115)
         circle(this.position.x, this.position.y, d)
     }
 }
@@ -70,11 +80,30 @@ function setup () {
     fft.setInput(mic)
 
     makeScene()
+    applyTheme()
+    document.getElementById('theme-toggle').addEventListener('click', (e) => {
+        e.stopPropagation()
+        themeName = themeName === 'dark' ? 'light' : 'dark'
+        localStorage.setItem('sg-theme', themeName)
+        applyTheme()
+    })
+}
+
+function applyTheme () {
+    theme = themes[themeName]
+    bands = theme.bands
+    document.body.classList.toggle('light', themeName === 'light')
+    // repaint fully so old trails don't linger
+    background(theme.bg[0], theme.bg[1], theme.bg[2])
+}
+
+function overButton (e) {
+    return e && e.target && e.target.closest && e.target.closest('#theme-toggle')
 }
 
 function draw () {
     // see-through background leaves little trails
-    background(5, 3, 18, started ? 70 : 255)
+    background(theme.bg[0], theme.bg[1], theme.bg[2], started ? 70 : 255)
     drawStars()
 
     if (!started) {
@@ -102,22 +131,22 @@ function draw () {
 }
 
 function drawStars () {
-    fill(255, 255, 255, 120)
+    fill(theme.star)
     for (let s of stars) circle(s[0], s[1], s[2])
 }
 
 function drawTitle () {
     textAlign(CENTER, CENTER)
-    fill(255)
+    fill(theme.text)
     textSize(min(width, height) / 12)
     text('SOUND GALAXY', width / 2, height / 2 - 30)
-    fill(255, 160)
+    fill(theme.text, 160)
     textSize(16)
     text('click anywhere to turn on the mic', width / 2, height / 2 + 30)
 }
 
 function drawCenter (msg) {
-    fill(255)
+    fill(theme.text)
     textAlign(CENTER, CENTER)
     textSize(18)
     text(msg, width / 2, height / 2)
@@ -132,36 +161,36 @@ function drawHud (spectrum) {
     let hz = round(maxI * (sampleRate() / 2) / spectrum.length)
     let vol = round(min(mic.getLevel() * 300, 100))
 
-    fill(10, 8, 30, 200)
+    fill(theme.panel)
     rect(16, 16, 220, 132, 12)
 
     textAlign(LEFT, TOP)
     textSize(13)
-    fill(255)
+    fill(theme.text)
     text('volume  ' + vol + '%', 30, 28)
     text('peak    ' + (spectrum[maxI] > 0 ? hz + ' Hz' : '-'), 30, 48)
 
     // a bar for each band
     let y = 76
     for (let b of bandNames) {
-        fill(255, 255, 255, 30)
+        fill(theme.text, 30)
         rect(30, y, 130, 10, 5)
         fill(bands[b])
         rect(30, y, level[b] * 130, 10, 5)
-        fill(255, 200)
+        fill(theme.text, 200)
         text(b, 172, y - 2)
         y += 20
     }
 
     if (showHelp) {
-        fill(10, 8, 30, 230)
+        fill(theme.panel[0], theme.panel[1], theme.panel[2], 235)
         rect(width / 2 - 170, height / 2 - 70, 340, 140, 14)
-        fill(255)
+        fill(theme.text)
         textAlign(CENTER, CENTER)
         textSize(14)
         text('pink = bass   green = mid   blue = treble\n\nmake some noise to move the galaxy\n\nH to close', width / 2, height / 2)
     } else {
-        fill(255, 110)
+        fill(theme.text, 110)
         textAlign(RIGHT, BOTTOM)
         textSize(12)
         text('H for help', width - 16, height - 16)
@@ -175,8 +204,8 @@ function startMic () {
     started = true
 }
 
-function mousePressed () { startMic() }
-function touchStarted () { startMic() }
+function mousePressed (e) { if (!overButton(e)) startMic() }
+function touchStarted (e) { if (!overButton(e)) startMic() }
 function keyPressed () {
     if (key === 'h' || key === 'H') showHelp = !showHelp
     startMic()
