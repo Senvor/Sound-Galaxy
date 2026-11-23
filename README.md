@@ -1,6 +1,16 @@
+<div align="center">
+
 # Sound Galaxy
 
-Live: https://soundgalaxy.senvor.dev/
+![Hackatime](https://hackatime.hackclub.com/api/v1/badge/U0B4TE3MN1G/Senvor/Sound-Galaxy)
+
+Live Preview: https://soundgalaxy.senvor.dev/
+
+<img src="images/preview.png" alt="Sound Galaxy running in the browser" width="800" />
+
+</div>
+
+---
 
 ## What is it?
 Sound Galaxy turns your mic into a little galaxy. Open it, allow the mic, and make some noise. Music, clapping, talking, whatever. The galaxy reacts to the sound in real time.
@@ -48,4 +58,5 @@ I wanted to make something you can actually play with instead of just look at. M
 I used AI to help debug and clean up parts of the code. The idea, design and the way it looks and feels are mine.
 
 ## License
-MIT
+
+This project is licensed under the [MIT License](LICENSE).
