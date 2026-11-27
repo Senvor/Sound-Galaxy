@@ -4,9 +4,9 @@
 
 ![Hackatime](https://hackatime.hackclub.com/api/v1/badge/U0B4TE3MN1G/Senvor/Sound-Galaxy)
 
-Live Preview: https://soundgalaxy.senvor.dev/
+**[Live Preview](https://soundgalaxy.senvor.dev/)**
 
-<img src="images/preview.png" alt="Sound Galaxy running in the browser" width="800" />
+<a href="https://soundgalaxy.senvor.dev/"><img src="images/preview.png" alt="Sound Galaxy running in the browser" width="800" /></a>
 
 </div>
 
